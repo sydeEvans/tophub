@@ -1,10 +1,9 @@
-import { Clock, TrendingUp, ShoppingBag, Flame, Eye, RefreshCw, Sparkles } from "lucide-react";
+import { Clock, TrendingUp, ShoppingBag } from "lucide-react";
 
 const hotLists = [
   {
     name: "知乎热榜",
-    icon: "🔥",
-    gradient: "from-violet-500 to-purple-600",
+    icon: "🔍",
     items: [
       { title: "中国 AI 新星 DeepSeek 何以震动硅谷", rank: 1 },
       { title: "2025年最值得去的10个小众目的地", rank: 2 },
@@ -18,8 +17,7 @@ const hotLists = [
   },
   {
     name: "微博热搜",
-    icon: "📱",
-    gradient: "from-pink-500 to-rose-600",
+    icon: "💬",
     items: [
       { title: "马斯克宣布星舰第四次试飞成功", rank: 1 },
       { title: "赵丽颖新剧收视率破纪录", rank: 2 },
@@ -33,8 +31,7 @@ const hotLists = [
   },
   {
     name: "36氪热榜",
-    icon: "💼",
-    gradient: "from-blue-500 to-indigo-600",
+    icon: "📊",
     items: [
       { title: "字节跳动最新估值突破4000亿美元", rank: 1 },
       { title: "AI 程序员取代人类？真相在这", rank: 2 },
@@ -49,7 +46,6 @@ const hotLists = [
   {
     name: "抖音热榜",
     icon: "🎵",
-    gradient: "from-violet-500 to-fuchsia-600",
     items: [
       { title: "#大学生宿舍惊现神秘生物# 播放破亿", rank: 1 },
       { title: "明星直播间卖假货被曝光", rank: 2 },
@@ -64,7 +60,6 @@ const hotLists = [
   {
     name: "微信热文",
     icon: "📝",
-    gradient: "from-emerald-500 to-teal-600",
     items: [
       { title: "深度好文：真正厉害的人，都做到了这一点", rank: 1 },
       { title: "一个中年男人的反思：我为什么选择创业", rank: 2 },
@@ -79,7 +74,6 @@ const hotLists = [
   {
     name: "B站热榜",
     icon: "📺",
-    gradient: "from-cyan-500 to-blue-600",
     items: [
       { title: "【硬核】耗时3个月，我造了一台光刻机", rank: 1 },
       { title: "月薪2万和20万的人差在哪里？", rank: 2 },
@@ -104,7 +98,7 @@ const shoppingHot = [
   { rank: 8, title: "7.9/4包！植护乳霜纸云柔巾100抽", price: "¥7.94", sold: "1000件", tag: "" },
 ];
 
-function RankBadge({ rank, gradient }: { rank: number; gradient: string }) {
+function RankBadge({ rank }: { rank: number }) {
   if (rank === 1) {
     return (
       <span className="rank-gold shrink-0 w-7 h-7 rounded-lg flex items-center justify-center text-sm font-bold text-yellow-900">
@@ -127,7 +121,7 @@ function RankBadge({ rank, gradient }: { rank: number; gradient: string }) {
     );
   }
   return (
-    <span className={`shrink-0 w-7 h-7 rounded-lg flex items-center justify-center text-sm font-semibold bg-gradient-to-br ${gradient} text-white/90`}>
+    <span className="rank-badge shrink-0 w-7 h-7 rounded-lg flex items-center justify-center text-sm font-medium text-zinc-600 dark:text-zinc-300">
       {rank}
     </span>
   );
@@ -136,19 +130,18 @@ function RankBadge({ rank, gradient }: { rank: number; gradient: string }) {
 function HotListCard({ data, index }: { data: typeof hotLists[0]; index: number }) {
   return (
     <div
-      className="card-lift glass-card rounded-2xl p-5 animate-slide-up"
-      style={{ animationDelay: `${index * 80}ms` }}
+      className="card card-hover rounded-2xl p-5"
     >
       <div className="mb-4 flex items-center gap-3">
-        <div className={`flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br ${data.gradient} text-white text-lg shadow-lg`}>
+        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300 text-lg">
           {data.icon}
         </div>
         <div>
-          <h2 className="text-base font-semibold text-zinc-900 dark:text-white tracking-tight">
+          <h2 className="text-base font-medium text-zinc-900 dark:text-zinc-100">
             {data.name}
           </h2>
           <div className="flex items-center gap-1 text-xs text-zinc-400 mt-0.5">
-            <RefreshCw className="w-3 h-3" />
+            <Clock className="w-3 h-3" />
             <span>每5分钟更新</span>
           </div>
         </div>
@@ -157,8 +150,8 @@ function HotListCard({ data, index }: { data: typeof hotLists[0]; index: number 
         {data.items.map((item) => (
           <li key={item.rank}>
             <div className="hot-item flex items-start gap-3">
-              <RankBadge rank={item.rank} gradient={data.gradient} />
-              <span className="text-sm text-zinc-600 dark:text-zinc-300 leading-relaxed hover:text-violet-600 dark:hover:text-violet-400 transition-colors cursor-pointer">
+              <RankBadge rank={item.rank} />
+              <span className="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed cursor-pointer">
                 {item.title}
               </span>
             </div>
@@ -170,35 +163,20 @@ function HotListCard({ data, index }: { data: typeof hotLists[0]; index: number 
 }
 
 function ShoppingCard({ item }: { item: typeof shoppingHot[0] }) {
-  const tagColors: Record<string, string> = {
-    "爆款": "from-rose-500 to-pink-600",
-    "热卖": "from-orange-500 to-amber-600",
-    "神价": "from-emerald-500 to-teal-600",
-    "推荐": "from-blue-500 to-indigo-600",
-  };
-
   return (
-    <div className="shop-card glass-card flex items-center gap-4 rounded-xl border border-zinc-200/60 dark:border-zinc-800/60 bg-white/70 dark:bg-zinc-900/70 p-4 animate-scale-in">
-      <div className="shrink-0 w-9 h-9 rounded-xl bg-gradient-to-br from-violet-500 to-indigo-600 flex items-center justify-center text-white font-bold text-base shadow-lg">
+    <div className="shop-card flex items-center gap-4 rounded-xl border border-zinc-200 dark:border-zinc-800 p-4">
+      <div className="shrink-0 w-9 h-9 rounded-lg bg-zinc-900 dark:bg-zinc-100 flex items-center justify-center text-zinc-100 dark:text-zinc-900 font-medium text-base">
         {item.rank}
       </div>
       <div className="flex-1 min-w-0">
-        <div className="flex items-center gap-2">
-          <p className="text-sm font-medium text-zinc-800 dark:text-zinc-200 truncate hover:text-violet-600 dark:hover:text-violet-400 transition-colors cursor-pointer">
-            {item.title}
-          </p>
-          {item.tag && (
-            <span className={`shrink-0 rounded-md bg-gradient-to-r ${tagColors[item.tag] || "from-zinc-400 to-zinc-500"} px-2 py-0.5 text-xs font-semibold text-white`}>
-              {item.tag}
-            </span>
-          )}
-        </div>
+        <p className="text-sm font-medium text-zinc-800 dark:text-zinc-200 truncate">
+          {item.title}
+        </p>
         <div className="flex items-center gap-3 mt-1.5">
-          <span className="text-lg font-bold bg-gradient-to-r from-violet-600 to-indigo-600 dark:from-violet-400 dark:to-indigo-400 bg-clip-text text-transparent">
+          <span className="text-base font-medium text-zinc-900 dark:text-zinc-100">
             {item.price}
           </span>
           <span className="text-xs text-zinc-400 flex items-center gap-1">
-            <Eye className="w-3 h-3" />
             已售 {item.sold}
           </span>
         </div>
@@ -213,90 +191,49 @@ export default function Home() {
     year: "numeric",
     month: "long",
     day: "numeric",
-    weekday: "long",
   });
 
   return (
-    <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950 relative">
-      <div className="fixed inset-0 bg-grid" />
-
-      <header className="sticky top-0 z-50 border-b border-zinc-200/60 bg-white/80 backdrop-blur-2xl dark:border-zinc-800/60 dark:bg-zinc-950/80">
-        <div className="mx-auto max-w-6xl px-6 py-4">
+    <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950">
+      <header className="sticky top-0 z-50 border-b border-zinc-200 dark:border-zinc-800 bg-zinc-50/80 dark:bg-zinc-950/80 backdrop-blur-sm">
+        <div className="mx-auto max-w-5xl px-6 py-4">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3 group">
-              <div className="relative">
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-violet-500 via-indigo-500 to-blue-500 text-white font-bold text-lg shadow-lg shadow-violet-500/25">
-                  🔥
-                </div>
+            <div className="flex items-center gap-3">
+              <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-zinc-900 dark:bg-zinc-100 text-zinc-100 dark:text-zinc-900 font-medium text-sm">
+                T
               </div>
               <div>
-                <h1 className="text-xl font-bold text-zinc-900 dark:text-white tracking-tight">
+                <h1 className="text-lg font-medium text-zinc-900 dark:text-white">
                   今日热榜
                 </h1>
-                <p className="text-xs text-zinc-500 dark:text-zinc-400 flex items-center gap-1.5">
-                  <span className="inline-block w-1.5 h-1.5 bg-emerald-500 rounded-full" />
-                  tophub.today · 实时更新
+                <p className="text-xs text-zinc-500 dark:text-zinc-400">
+                  tophub.today
                 </p>
               </div>
             </div>
-            <div className="flex items-center gap-2 rounded-full bg-zinc-100/80 dark:bg-zinc-900/80 px-4 py-2 text-sm text-zinc-600 dark:text-zinc-400 backdrop-blur-sm">
-              <Clock className="w-4 h-4" />
-              <span>{dateStr}</span>
+            <div className="text-sm text-zinc-500 dark:text-zinc-400">
+              {dateStr}
             </div>
           </div>
         </div>
       </header>
 
-      <main className="mx-auto max-w-6xl px-6 py-10 relative z-10">
-        <section className="mb-14 text-center">
-          <div className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-violet-500/10 to-indigo-500/10 dark:from-violet-500/20 dark:to-indigo-500/20 px-4 py-1.5 mb-8 border border-violet-500/20 dark:border-violet-500/30">
-            <Sparkles className="w-3.5 h-3.5 text-violet-500" />
-            <span className="text-xs font-medium text-violet-600 dark:text-violet-400 tracking-wide">数据实时聚合中</span>
-          </div>
-          <h2 className="text-5xl md:text-6xl font-bold mb-5 tracking-tight text-zinc-900 dark:text-white">
-            全网热点
-            <span className="block mt-2 gradient-text">一网打尽</span>
+      <main className="mx-auto max-w-5xl px-6 py-12">
+        <section className="mb-16 text-center">
+          <h2 className="text-4xl md:text-5xl font-medium mb-4 text-zinc-900 dark:text-white tracking-tight">
+            全网热点一网打尽
           </h2>
-          <p className="text-zinc-500 dark:text-zinc-400 max-w-lg mx-auto text-base leading-relaxed">
-            聚合知乎、微博、抖音、B站、微信等各大平台热门内容，洞察趋势，掌控热点
+          <p className="text-zinc-500 dark:text-zinc-400 max-w-md mx-auto">
+            聚合知乎、微博、抖音、B站、微信等各大平台热门内容
           </p>
         </section>
 
-        <section className="mb-14 grid grid-cols-2 md:grid-cols-4 gap-4">
-          {[
-            { icon: Flame, label: "热榜来源", value: "50+", gradient: "from-rose-500 to-pink-600" },
-            { icon: TrendingUp, label: "今日热点", value: "1000+", gradient: "from-violet-500 to-purple-600" },
-            { icon: RefreshCw, label: "实时更新", value: "24/7", gradient: "from-emerald-500 to-teal-600" },
-            { icon: Sparkles, label: "加载速度", value: "<1s", gradient: "from-blue-500 to-indigo-600" },
-          ].map((stat, i) => (
-            <div
-              key={stat.label}
-              className="card-lift glass-card rounded-2xl p-5 text-center animate-slide-up stat-glow"
-              style={{ animationDelay: `${i * 80}ms` }}
-            >
-              <div className={`inline-flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br ${stat.gradient} text-white mb-3 shadow-lg`}>
-                <stat.icon className="w-5 h-5" />
-              </div>
-              <div className="text-2xl font-bold text-zinc-900 dark:text-white tracking-tight animate-number-pop">
-                {stat.value}
-              </div>
-              <div className="text-xs text-zinc-500 dark:text-zinc-400 mt-1 font-medium">
-                {stat.label}
-              </div>
-            </div>
-          ))}
-        </section>
-
-        <section className="mb-14">
-          <div className="flex items-center gap-3 mb-8 group">
-            <div className="p-2 rounded-xl bg-gradient-to-br from-violet-500 to-indigo-600 text-white shadow-lg shadow-violet-500/20">
-              <TrendingUp className="w-5 h-5" />
-            </div>
-            <h3 className="text-xl font-bold text-zinc-900 dark:text-white tracking-tight section-title">
-              热门榜单
-            </h3>
-          </div>
-          <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3 grid-gap-enhanced">
+        <section className="mb-16">
+          <h3 className="text-lg font-medium text-zinc-900 dark:text-white mb-6 flex items-center gap-2">
+            <TrendingUp className="w-5 h-5" />
+            热门榜单
+          </h3>
+          <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
             {hotLists.map((list, i) => (
               <HotListCard key={list.name} data={list} index={i} />
             ))}
@@ -304,38 +241,20 @@ export default function Home() {
         </section>
 
         <section>
-          <div className="flex items-center gap-3 mb-8">
-            <div className="p-2 rounded-xl bg-gradient-to-br from-amber-500 to-orange-600 text-white shadow-lg shadow-amber-500/20">
-              <ShoppingBag className="w-5 h-5" />
-            </div>
-            <h3 className="text-xl font-bold text-zinc-900 dark:text-white tracking-tight section-title">
-              好物推荐
-            </h3>
-            <span className="ml-2 rounded-full bg-gradient-to-r from-amber-400 to-orange-500 px-3 py-1 text-xs font-semibold text-white">
-              精选
-            </span>
-          </div>
+          <h3 className="text-lg font-medium text-zinc-900 dark:text-white mb-6 flex items-center gap-2">
+            <ShoppingBag className="w-5 h-5" />
+            好物推荐
+          </h3>
           <div className="grid gap-4 md:grid-cols-2">
             {shoppingHot.map((item, i) => (
-              <div key={item.rank} style={{ animationDelay: `${i * 60}ms` }}>
-                <ShoppingCard item={item} />
-              </div>
+              <ShoppingCard key={item.rank} item={item} />
             ))}
           </div>
         </section>
 
-        <footer className="mt-20 pt-10 text-center relative">
-          <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-zinc-200 to-transparent dark:via-zinc-800" />
-          <div className="flex items-center justify-center gap-3 mb-5">
-            <div className="w-12 h-px bg-gradient-to-r from-transparent to-zinc-300 dark:to-zinc-700" />
-            <span className="text-xl">🔥</span>
-            <div className="w-12 h-px bg-gradient-to-l from-transparent to-zinc-300 dark:to-zinc-700" />
-          </div>
-          <p className="text-sm text-zinc-500 dark:text-zinc-400">
-            数据来源：tophub.today · 由 AI 自动聚合生成
-          </p>
-          <p className="mt-2 text-xs text-zinc-400 dark:text-zinc-600 flex items-center justify-center gap-1">
-            © {new Date().getFullYear()} · 洞察热点，掌控趋势
+        <footer className="mt-20 pt-8 text-center border-t border-zinc-200 dark:border-zinc-800">
+          <p className="text-sm text-zinc-400 dark:text-zinc-500">
+            tophub.today · 由 AI 自动聚合生成
           </p>
         </footer>
       </main>
